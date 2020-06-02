@@ -29,8 +29,7 @@ def main():
 #==========================================================================
 
 def parse_input():
-    """
-    Parse the arguments from the command-line.
+    """ Parse the arguments from the command-line.
 
         - Text before '-target' specifies target directory
         - Text before '-source' specify source(s)
