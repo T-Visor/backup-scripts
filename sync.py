@@ -12,7 +12,7 @@ example use: python3 sync.py -target MY_BACKUPFOLDER -source ARG_1 ARG_2
 """
 
 import argparse
-import Gzip
+import gzip
 import os
 import shutil
 import sys
@@ -32,18 +32,19 @@ def parse_input():
     """ Parse the arguments from the command-line.
 
         - Text before '-target' specifies target directory
+          (path cannot have spaces)
         - Text before '-source' specify source(s)
         - Text before '-compress' specifies zipping with Gzip
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-target', nargs=1, required=True,
+    parser.add_argument('-target', '-d', nargs='+', required=True,
                         help='Target Backup folder')
     parser.add_argument('-source', nargs='+', required=True,
                         help='Source Files to be added')
     parser.add_argument('-compress', nargs=1,  type=int,
                         help='Gzip threshold in bytes', default=[100000])
 
-    # if no arguments were passed, show help the screen 
+    # if no arguments were passed, show the help screen 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit()
@@ -94,7 +95,7 @@ def transfer_file(source, target, compress):
     """
     try:
         if compress:
-            with Gzip.open(target + '.gz', 'wb') as target_fid:
+            with gzip.open(target + '.gz', 'wb') as target_fid:
                 with open(source, 'rb') as source_fid:
                     target_fid.writelines(source_fid)
             print('Compress {}'.format(source))
