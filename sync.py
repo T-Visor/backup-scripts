@@ -42,7 +42,7 @@ def parse_input():
     parser.add_argument('-source', nargs='+', required=True,
                         help='Source Files to be added')
     parser.add_argument('-compress', nargs=1,  type=int,
-                        help='Gzip threshold in bytes', default=[100000])
+                        help='Gzip threshold in bytes', default=[1000000000])
 
     # if no arguments were passed, show the help screen 
     if len(sys.argv) == 1:
