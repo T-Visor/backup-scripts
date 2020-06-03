@@ -37,7 +37,7 @@ def parse_input():
         - Text before '-compress' specifies zipping with Gzip
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-target', '-d', nargs='+', required=True,
+    parser.add_argument('-target', nargs=1, required=True,
                         help='Target Backup folder')
     parser.add_argument('-source', nargs='+', required=True,
                         help='Source Files to be added')
