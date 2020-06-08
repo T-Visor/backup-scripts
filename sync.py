@@ -4,9 +4,10 @@ Source: https://codereview.stackexchange.com/questions/101616/simple-backup-scri
 Original Author: magu_ (2015)
 Modified By: T-Visor (2020)
 
-Description: Simple backup script which just creates the root structure in an other
-             folder and syncs everything which recursevely lies within one of the source
-             folders. For files bigger than a threshold they are first Gziped.
+Description: This backup script creates the root structure in another
+             folder and syncs everything which recursevely lies within each of
+             the source folders. For files bigger than as specified threshold,
+             they are first Gziped.
 
 example use: python3 sync.py -target MY_BACKUPFOLDER -source ARG_1 ARG_2
 """
@@ -21,10 +22,10 @@ def main():
     """ Run the backup script.
     """
     arguments = parse_input()
-    print('### Start copy ###')
+    print('******************Start copy******************')
     for root in arguments.source:
         sync_root(root, arguments)
-    print('### Done ###')
+    print('******************Done************************')
 
 #==========================================================================
 
@@ -42,9 +43,9 @@ def parse_input():
     parser.add_argument('-source', nargs='+', required=True,
                         help='Source Files to be added')
     parser.add_argument('-compress', nargs=1,  type=int,
-                        help='Gzip threshold in bytes', default=[1000000000])
+                        help='Gzip threshold in bytes', default=[9000000000])
 
-    # if no arguments were passed, show the help screen 
+    # if no arguments were passed, show the help screen
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit()
@@ -109,7 +110,7 @@ def transfer_file(source, target, compress):
 
 def sync_root(root, arguments):
     """ Construct the proper path in the target directory
-        before copying any files.
+        before copying files.
 
         - root : the root directory file path (string)
         - arguments : command-line arguments
