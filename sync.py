@@ -99,10 +99,8 @@ def transfer_file(source, target, compress):
             with gzip.open(target + '.gz', 'wb') as target_fid:
                 with open(source, 'rb') as source_fid:
                     target_fid.writelines(source_fid)
-            print('Compress {}'.format(source))
         else:
             shutil.copy2(source, target)
-            print('Copy {}'.format(source))
     except FileNotFoundError:
         os.makedirs(os.path.dirname(target))
         transfer_file(source, target, compress)
@@ -118,10 +116,26 @@ def sync_root(root, arguments):
     target = arguments.target[0]
     compress = arguments.compress[0]
 
+    bar = [
+        " [=     ]",
+        " [ =    ]",
+        " [  =   ]",
+        " [   =  ]",
+        " [    = ]",
+        " [     =]",
+        " [    = ]",
+        " [   =  ]",
+        " [  =   ]",
+        " [ =    ]",
+    ]
+    i = 0
+
     for path, _, files in os.walk(root):
+        print(bar[i % len(bar)], end="\r") # display waiting animation
         for source in files:
             source = path + '/' + source
             sync_file(source, target + source, compress)
+            i += 1
 
 
 main()

@@ -15,4 +15,3 @@ echo -e "${PURPLE}DESTINATION: $TARGET_DIRECTORY"
 echo -e "${NO_COLOR}"
 
 python3 sync.py -target $TARGET_DIRECTORY -source $SOURCE_DIRECTORY
-
