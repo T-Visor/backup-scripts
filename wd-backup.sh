@@ -1,9 +1,9 @@
 #!/bin/bash
 
-TARGET_DIRECTORY="/media/t-visor/ugreen-drive/my-backups/my-files"
+TARGET_DIRECTORY="/media/t-visor/wd-drive/my-backups/my-files"
 SOURCE_DIRECTORY="/home/t-visor/Documents"
 
-echo -e "Backing up files to UGREEN drive... "
+echo -e "Backing up files to Western Digital drive... "
 echo -e ""
 echo -e "SOURCE: $SOURCE_DIRECTORY"
 echo -e "DESTINATION: $TARGET_DIRECTORY"

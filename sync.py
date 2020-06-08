@@ -16,15 +16,18 @@ import gzip
 import os
 import shutil
 import sys
+import time
+from time import sleep
+from tqdm import tqdm
 
 def main():
     """ Run the backup script.
     """
     arguments = parse_input()
-    print('### Start copy ###')
+    print('***************Start copy***************')
     for root in arguments.source:
         sync_root(root, arguments)
-    print('### Done ###')
+    print('***************Done***************')
 
 #==========================================================================
 
@@ -44,7 +47,7 @@ def parse_input():
     parser.add_argument('-compress', nargs=1,  type=int,
                         help='Gzip threshold in bytes', default=[1000000000])
 
-    # if no arguments were passed, show the help screen 
+    # if no arguments were passed, show the help screen
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit()
@@ -98,10 +101,10 @@ def transfer_file(source, target, compress):
             with gzip.open(target + '.gz', 'wb') as target_fid:
                 with open(source, 'rb') as source_fid:
                     target_fid.writelines(source_fid)
-            print('Compress {}'.format(source))
+            # print('Compress {}'.format(source))
         else:
             shutil.copy2(source, target)
-            print('Copy {}'.format(source))
+            # print('Copy {}'.format(source))
     except FileNotFoundError:
         os.makedirs(os.path.dirname(target))
         transfer_file(source, target, compress)
@@ -114,13 +117,26 @@ def sync_root(root, arguments):
         - root : the root directory file path (string)
         - arguments : command-line arguments
     """
+    file_count = 0
     target = arguments.target[0]
     compress = arguments.compress[0]
 
+    # On the first pass, find the file count in the directory.
+    print('finding files to sync...')
+    for _ in walk_directory(root):
+        file_count += 1
+
+    # On the second pass, start syncing the files from source to
+    # destination.
+    for path in tqdm(walk_directory(root), total=file_count):
+        transfer_file(path, target + path, compress)
+
+
+def walk_directory(root):
     for path, _, files in os.walk(root):
         for source in files:
             source = path + '/' + source
-            sync_file(source, target + source, compress)
+            yield source
 
 
 main()
