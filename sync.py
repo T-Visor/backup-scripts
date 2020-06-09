@@ -1,5 +1,5 @@
 """
-Source: https://codereview.stackexchange.com/questions/101616/simple-backup-script-in-python
+Source: https://codereview.stackexchange.com/questions/101616
 
 Original Author: magu_ (2015)
 Modified By: T-Visor (2020)
@@ -20,8 +20,7 @@ import sys
 import time
 from threading import Thread
 
-# flag variable shared between threads
-FINISHED = False
+FINISHED = False  #flag variable shared between threads
 
 def main():
     """ Run the backup script.
@@ -29,7 +28,6 @@ def main():
     arguments = parse_input()
     print('******************Start copy******************')
     for root in arguments.source:
-        #sync_root(root, arguments)
         sync_thread = Thread(target = sync_root, args = (root, arguments, ))
         sync_thread.start()
         animation_thread = Thread(target = waiting_animation, args = ())
@@ -142,6 +140,10 @@ def sync_root(root, arguments):
 def waiting_animation():
     """ Displays a dynamic animation, typically used to inform the end user
         that a task is currently running.
+
+        Source: https://stackoverflow.com/questions/22029562/
+
+        Original Author: Python Pro
     """
     animation_states = ['[■□□□□□□□□□]', '[■■□□□□□□□□]', '[■■■□□□□□□□]',
                         '[■■■■□□□□□□]', '[■■■■■□□□□□]', '[■■■■■■□□□□]',
