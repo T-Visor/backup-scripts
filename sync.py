@@ -28,6 +28,7 @@ def main():
     arguments = parse_input()
     print('******************Start copy******************')
     start = time.time()
+
     for root in arguments.source:
         sync_thread = Thread(target=sync_root, args=(root, arguments, ))
         sync_thread.start()
@@ -35,6 +36,7 @@ def main():
         animation_thread.start()
         sync_thread.join()
         animation_thread.join()
+
     end = time.time()
     print('Elapsed time: {} second(s)'.format(end - start))
     print('******************Done************************')
@@ -156,13 +158,17 @@ def waiting_animation():
                         '[□□□□□□■■■■]', '[□□□□□□□■■■]', '[□□□□□□□□■■]',
                         '[□□□□□□□□□■]', '[□□□□□□□□□□]']
 
+    cursor_up_one = '\x1b[1A'
+    erase_line = '\x1b[2K'
+
     i = 0
     while not FINISHED:
         time.sleep(0.1)
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
         sys.stdout.flush()
         i += 1
-    print()
+    sys.stdout.write('\r')
+    sys.stdout.write(erase_line)
 
 
 main()
