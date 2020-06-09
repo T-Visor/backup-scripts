@@ -25,8 +25,8 @@ FINISHED = False  #flag variable shared between threads
 def main():
     """ Run the backup script.
     """
-    arguments = parse_input()
     print('******************Start copy******************')
+    arguments = parse_input()
     start = time.time()
 
     for root in arguments.source:
@@ -158,7 +158,6 @@ def waiting_animation():
                         '[□□□□□□■■■■]', '[□□□□□□□■■■]', '[□□□□□□□□■■]',
                         '[□□□□□□□□□■]', '[□□□□□□□□□□]']
 
-    cursor_up_one = '\x1b[1A'
     erase_line = '\x1b[2K'
 
     i = 0
