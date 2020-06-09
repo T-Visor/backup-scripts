@@ -17,6 +17,11 @@ import gzip
 import os
 import shutil
 import sys
+import time
+from threading import Thread
+
+# flag variable shared between threads
+FINISHED = False
 
 def main():
     """ Run the backup script.
@@ -24,7 +29,13 @@ def main():
     arguments = parse_input()
     print('******************Start copy******************')
     for root in arguments.source:
-        sync_root(root, arguments)
+        #sync_root(root, arguments)
+        sync_thread = Thread(target = sync_root, args = (root, arguments, ))
+        sync_thread.start()
+        animation_thread = Thread(target = waiting_animation, args = ())
+        animation_thread.start()
+        sync_thread.join()
+        animation_thread.join()
     print('******************Done************************')
 
 #==========================================================================
@@ -116,26 +127,37 @@ def sync_root(root, arguments):
     target = arguments.target[0]
     compress = arguments.compress[0]
 
-    bar = [
-        " [=     ]",
-        " [ =    ]",
-        " [  =   ]",
-        " [   =  ]",
-        " [    = ]",
-        " [     =]",
-        " [    = ]",
-        " [   =  ]",
-        " [  =   ]",
-        " [ =    ]",
-    ]
-    i = 0
+    try:
+        for path, _, files in os.walk(root):
+            for source in files:
+                source = path + '/' + source
+                sync_file(source, target + source, compress)
+    except PermissionError:
+        print('Target directory not found... cannot perform backup')
+    finally:
+        global FINISHED
+        FINISHED = True
 
-    for path, _, files in os.walk(root):
-        print(bar[i % len(bar)], end="\r") # display waiting animation
-        for source in files:
-            source = path + '/' + source
-            sync_file(source, target + source, compress)
-            i += 1
+
+def waiting_animation():
+    """ Displays a dynamic animation, typically used to inform the end user
+        that a task is currently running.
+    """
+    animation_states = ['[■□□□□□□□□□]', '[■■□□□□□□□□]', '[■■■□□□□□□□]',
+                        '[■■■■□□□□□□]', '[■■■■■□□□□□]', '[■■■■■■□□□□]',
+                        '[■■■■■■■□□□]', '[■■■■■■■■□□]', '[■■■■■■■■■□]',
+                        '[■■■■■■■■■■]', '[□■■■■■■■■■]', '[□□■■■■■■■■]',
+                        '[□□□■■■■■■■]', '[□□□□■■■■■■]', '[□□□□□■■■■■]',
+                        '[□□□□□□■■■■]', '[□□□□□□□■■■]', '[□□□□□□□□■■]',
+                        '[□□□□□□□□□■]', '[□□□□□□□□□□]' ]
+
+    i = 0
+    while not FINISHED:
+        time.sleep(0.2)
+        sys.stdout.write('\r' + animation_states[i % len(animation_states)])
+        sys.stdout.flush()
+        i += 1
+    print()
 
 
 main()
