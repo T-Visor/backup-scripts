@@ -27,6 +27,7 @@ def main():
     """
     arguments = parse_input()
     print('******************Start copy******************')
+    start = time.time()
     for root in arguments.source:
         sync_thread = Thread(target=sync_root, args=(root, arguments, ))
         sync_thread.start()
@@ -34,6 +35,8 @@ def main():
         animation_thread.start()
         sync_thread.join()
         animation_thread.join()
+    end = time.time()
+    print('Elapsed time: {} second(s)'.format(end - start))
     print('******************Done************************')
 
 #==========================================================================
