@@ -9,7 +9,7 @@ Description: This backup script creates the root structure in another
              the source folders. For files bigger than as specified threshold,
              they are first Gziped.
 
-example use: python3 sync.py -target MY_BACKUPFOLDER -source ARG_1 ARG_2
+example use: python3 sync.py -target MY_BACKUPFOLDER -source SRC_1 SRC_2
 """
 
 import argparse
@@ -28,9 +28,9 @@ def main():
     arguments = parse_input()
     print('******************Start copy******************')
     for root in arguments.source:
-        sync_thread = Thread(target = sync_root, args = (root, arguments, ))
+        sync_thread = Thread(target=sync_root, args=(root, arguments, ))
         sync_thread.start()
-        animation_thread = Thread(target = waiting_animation, args = ())
+        animation_thread = Thread(target=waiting_animation, args=())
         animation_thread.start()
         sync_thread.join()
         animation_thread.join()
@@ -138,7 +138,7 @@ def sync_root(root, arguments):
 
 
 def waiting_animation():
-    """ Displays a dynamic animation, typically used to inform the end user
+    """ Displays an animated loading bar, used to inform the end user
         that a task is currently running.
 
         Source: https://stackoverflow.com/questions/22029562/
@@ -151,11 +151,11 @@ def waiting_animation():
                         '[■■■■■■■■■■]', '[□■■■■■■■■■]', '[□□■■■■■■■■]',
                         '[□□□■■■■■■■]', '[□□□□■■■■■■]', '[□□□□□■■■■■]',
                         '[□□□□□□■■■■]', '[□□□□□□□■■■]', '[□□□□□□□□■■]',
-                        '[□□□□□□□□□■]', '[□□□□□□□□□□]' ]
+                        '[□□□□□□□□□■]', '[□□□□□□□□□□]']
 
     i = 0
     while not FINISHED:
-        time.sleep(0.2)
+        time.sleep(0.1)
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
         sys.stdout.flush()
         i += 1
