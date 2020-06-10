@@ -166,6 +166,7 @@ def waiting_animation():
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
         sys.stdout.flush()
         i += 1
+    # erase the progress bar when it is no longer needed
     sys.stdout.write('\r')
     sys.stdout.write(erase_line)
 
