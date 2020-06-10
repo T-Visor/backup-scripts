@@ -8,10 +8,14 @@ RED='\033[1;33m'
 PURPLE='\033[1;35m'
 NO_COLOR='\033[0m' 
 
-echo -e "Backing up files to UGREEN drive... "
-echo -e ""
-echo -e "${RED}SOURCE: $SOURCE_DIRECTORY"
-echo -e "${PURPLE}DESTINATION: $TARGET_DIRECTORY"
-echo -e "${NO_COLOR}"
+if [ -d "$TARGET_DIRECTORY" ]; then
+    echo -e "Backing up files to UGREEN drive... "
+    echo -e ""
+    echo -e "${RED}SOURCE: $SOURCE_DIRECTORY"
+    echo -e "${PURPLE}DESTINATION: $TARGET_DIRECTORY"
+    echo -e "${NO_COLOR}"
+    python3 sync.py -target $TARGET_DIRECTORY -source $SOURCE_DIRECTORY
+else
+    echo -e "UGREEN drive is not connected."
+fi
 
-python3 sync.py -target $TARGET_DIRECTORY -source $SOURCE_DIRECTORY

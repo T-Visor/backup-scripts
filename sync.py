@@ -136,7 +136,7 @@ def sync_root(root, arguments):
                 source = path + '/' + source
                 sync_file(source, target + source, compress)
     except PermissionError:
-        print('Target directory not found... cannot perform backup')
+        print('Target directory not found... cannot perform backup.')
     finally:
         global FINISHED
         FINISHED = True
