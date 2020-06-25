@@ -25,7 +25,7 @@ FINISHED = False  #flag variable shared between threads
 def main():
     """ Run the backup script.
     """
-    print('******************Start copy******************')
+    print('******************Syncing files******************')
     arguments = parse_input()
     start = time.time()
 
@@ -39,7 +39,7 @@ def main():
 
     end = time.time()
     print('Elapsed time: {} second(s)'.format(end - start))
-    print('******************Done************************')
+    print('******************Done***************************')
 
 #==========================================================================
 
