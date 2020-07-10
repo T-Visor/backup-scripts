@@ -5,9 +5,9 @@ Original Author: magu_ (2015)
 Modified By: T-Visor (2020)
 
 Description: This backup script creates the root structure in another
-             folder and syncs everything which recursevely lies within each of
-             the source folders. For files bigger than as specified threshold,
-             they are first Gziped.
+             folder, and syncs everything which recursively lies within each
+             source folder. For files bigger than the specified threshold,
+             they are first compressed.
 
 example use: python3 sync.py -target MY_BACKUPFOLDER -source SRC_1 SRC_2
 """

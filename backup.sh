@@ -21,6 +21,7 @@ start_sync () {
     python3 sync.py -target $TARGET_DIRECTORY -source $SOURCE_DIRECTORY
 }
 
+# Echo the drive name before syncing
 if [ -d $UGREEN_DRIVE ]; then
     echo -e "Backing up files to UGREEN drive...\n"
     start_sync $UGREEN_DRIVE
