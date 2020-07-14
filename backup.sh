@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO: Find a way to use the 'find' command to detect a folder and back up to
+# it
+
 # Backup drive paths
 UGREEN_DRIVE="/media/t-visor/ugreen-drive/my-backups/my-files"  
 WD_DRIVE="/media/t-visor/wd-drive/my-backups/my-files" 
