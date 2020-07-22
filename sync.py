@@ -20,7 +20,8 @@ import sys
 import time
 from threading import Thread
 
-FINISHED = False  #flag variable shared between threads
+# flag variable shared between threads
+FINISHED = False
 
 def main():
     """ Run the backup script.
@@ -46,10 +47,10 @@ def main():
 def parse_input():
     """ Parse the arguments from the command-line.
 
-        - Text before '-target' specifies target directory
+        - Text after '-target' specifies the target directory
           (path cannot have spaces)
-        - Text before '-source' specify source(s)
-        - Text before '-compress' specifies zipping with Gzip
+        - Text after '-source' specify source(s)
+        - Text after '-compress' specifies zipping with Gzip
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-target', nargs=1, required=True,
@@ -143,8 +144,7 @@ def sync_root(root, arguments):
 
 
 def waiting_animation():
-    """ Displays an animated loading bar, used to inform the end user
-        that a task is currently running.
+    """ Displays an animated progress bar while a task is running.
 
         Source: https://stackoverflow.com/questions/22029562/
 
@@ -166,6 +166,7 @@ def waiting_animation():
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
         sys.stdout.flush()
         i += 1
+
     # erase the progress bar when it is no longer needed
     sys.stdout.write('\r')
     sys.stdout.write(erase_line)
