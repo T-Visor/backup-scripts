@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Directory for backups on external drive 
+BACKUP_FOLDER='my-files'
+
 # Source and target directories for backup
 TARGET_DIRECTORY=value
 SOURCE_DIRECTORY="/home/t-visor/Documents"
@@ -18,7 +21,7 @@ start_sync () {
 }
 
 echo -e "Finding backup drive path...\n"
-DRIVE=$(find /media/t-visor -name 'my-files')
+backup_path=$(find /media/t-visor -maxdepth 3 -name $BACKUP_FOLDER) 
 
-# start syncing if the drive is connected 
-[ ! -z $DRIVE ] && start_sync $DRIVE || echo "Drive not connected."
+# Start syncing if the drive is connected 
+[ ! -z $backup_path ] && start_sync $backup_path || echo "Drive not connected."
