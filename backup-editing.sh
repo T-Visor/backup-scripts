@@ -17,8 +17,8 @@ start_sync () {
     python3 sync.py -target $TARGET_DIRECTORY -source $SOURCE_DIRECTORY
 }
 
-# Find the backup drive path
+echo -e "Finding backup drive path...\n"
 DRIVE=$(find /media/t-visor -name 'my-files')
 
-# start syncing process if the drive is connected 
+# start syncing if the drive is connected 
 [ ! -z $DRIVE ] && start_sync $DRIVE || echo "Drive not connected."
