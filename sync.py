@@ -68,59 +68,6 @@ def parse_input():
     return parser.parse_args()
 
 
-def size_if_newer(source, target):
-    """ If source is newer return its size, otherwise return False.
-
-        - source : source file path (string)
-        - target : target file path (string)
-    """
-    src_stat = os.stat(source)
-    try:
-        target_ts = os.stat(target).st_mtime
-    except FileNotFoundError:
-        try:
-            target_ts = os.stat(target + '.gz').st_mtime
-        except FileNotFoundError:
-            target_ts = 0
-
-    # The time difference of one second is necessary since subsecond accuracy
-    # of os.st_mtime is striped by copy2
-    return src_stat.st_size if (src_stat.st_mtime - target_ts > 1) else False
-
-
-def sync_file(source, target, compress):
-    """ Determines if any changes were made to the source file
-        since the last sync. If so, copy the new file to the target folder.
-
-        - source : source file path (string)
-        - target : target file path (string)
-        - compress : Gzip threshold in bytes (int)
-    """
-    size = size_if_newer(source, target)
-
-    if size:
-        transfer_file(source, target, size > compress)
-
-
-def transfer_file(source, target, compress):
-    """ Either copy or compress and copy the file.
-
-        - source : source file path (string)
-        - target : target file path (string)
-        - compress : Gzip threshold in bytes (int)
-    """
-    try:
-        if compress:
-            with gzip.open(target + '.gz', 'wb') as target_fid:
-                with open(source, 'rb') as source_fid:
-                    target_fid.writelines(source_fid)
-        else:
-            shutil.copy2(source, target)
-    except FileNotFoundError:
-        os.makedirs(os.path.dirname(target))
-        transfer_file(source, target, compress)
-
-
 def sync_root(root, arguments):
     """ Construct the root structure in the target directory
         before copying files.
@@ -141,6 +88,59 @@ def sync_root(root, arguments):
     finally:
         global FINISHED
         FINISHED = True
+
+
+def sync_file(source, target, compress):
+    """ Determines if any changes were made to the source file
+        since the last sync. If so, copy the new file to the target folder.
+
+        - source : source file path (string)
+        - target : target file path (string)
+        - compress : Gzip threshold in bytes (int)
+    """
+    size = size_if_newer(source, target)
+
+    if size:
+        transfer_file(source, target, size > compress)
+
+
+def size_if_newer(source, target):
+    """ If source is newer return its size, otherwise return False.
+
+        - source : source file path (string)
+        - target : target file path (string)
+    """
+    src_stat = os.stat(source)
+    try:
+        target_ts = os.stat(target).st_mtime
+    except FileNotFoundError:
+        try:
+            target_ts = os.stat(target + '.gz').st_mtime
+        except FileNotFoundError:
+            target_ts = 0
+
+    # The time difference of one second is necessary since subsecond accuracy
+    # of os.st_mtime is striped by copy2
+    return src_stat.st_size if (src_stat.st_mtime - target_ts > 1) else False
+
+
+def transfer_file(source, target, compress):
+    """ Either copy or compress and copy the file.
+
+        - source : source file path (string)
+        - target : target file path (string)
+        - compress : Gzip threshold in bytes (int)
+    """
+    try:
+        if compress:
+            with gzip.open(target + '.gz', 'wb') as target_fid:
+                with open(source, 'rb') as source_fid:
+                    target_fid.writelines(source_fid)
+        else:
+            shutil.copy2(source, target)
+    except FileNotFoundError:
+        os.makedirs(os.path.dirname(target))
+        transfer_file(source, target, compress)
 
 
 def display_waiting_animation():
