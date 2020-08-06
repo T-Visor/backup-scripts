@@ -33,7 +33,7 @@ def main():
     for root in arguments.source:
         sync_thread = Thread(target=sync_root, args=(root, arguments, ))
         sync_thread.start()
-        animation_thread = Thread(target=waiting_animation, args=())
+        animation_thread = Thread(target=display_waiting_animation, args=())
         animation_thread.start()
         sync_thread.join()
         animation_thread.join()
@@ -122,10 +122,10 @@ def transfer_file(source, target, compress):
 
 
 def sync_root(root, arguments):
-    """ Construct the proper path in the target directory
+    """ Construct the root structure in the target directory
         before copying files.
 
-        - root : the root directory file path (string)
+        - root : the root directory (string)
         - arguments : command-line arguments
     """
     target = arguments.target[0]
@@ -143,7 +143,7 @@ def sync_root(root, arguments):
         FINISHED = True
 
 
-def waiting_animation():
+def display_waiting_animation():
     """ Displays an animated progress bar while a task is running.
 
         Source: https://stackoverflow.com/questions/22029562/
