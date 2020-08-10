@@ -69,8 +69,8 @@ def parse_input():
 
 
 def sync_root(root, arguments):
-    """ Construct the root structure in the target directory
-        before copying files.
+    """ Construct the proper file structure (root-to-source)
+        in the target directory before copying files.
 
         - root : the root directory (string)
         - arguments : command-line arguments
@@ -144,7 +144,7 @@ def transfer_file(source, target, compress):
 
 
 def display_waiting_animation():
-    """ Displays an animated progress bar while a task is running.
+    """ Displays an animated progress bar while another thread is running.
 
         Source: https://stackoverflow.com/questions/22029562/
 
@@ -163,6 +163,7 @@ def display_waiting_animation():
     i = 0
     while not FINISHED:
         time.sleep(0.1)
+        # carriage return then write an animation state
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
         sys.stdout.flush()
         i += 1
