@@ -69,7 +69,7 @@ def parse_input():
 
 
 def sync_root(root, arguments):
-    """ Construct the proper file structure (root-to-source)
+    """ Construct the root file structure (root-to-source)
         in the target directory before copying files.
 
         - root : the root directory (string)

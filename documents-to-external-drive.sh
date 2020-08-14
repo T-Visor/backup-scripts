@@ -1,16 +1,5 @@
 #!/bin/bash
 
-##################################################################
-# Description: Search for a designated folder name               #
-#              in an external drive and start the backup process #
-#              if found. This script calls a Python script       #
-#              named 'sync.py' which will handle the rest of     #
-#              the backup process.                               #
-#                                                                #
-# Author: T-Visor                                                #
-##################################################################
-
-# Designated directory name for storing backups 
 BACKUP_FOLDER='my-files'
 
 # Source and target directories for backup
@@ -23,7 +12,7 @@ RED='\033[1;33m'
 PURPLE='\033[1;35m'
 NO_COLOR='\033[0m'
 
-echo -e "Finding backup drive path...\n"
+echo -e "Finding '$BACKUP_FOLDER' on external drive...\n"
 backup_path=$(find /media/t-visor -maxdepth 3 -name $BACKUP_FOLDER) 
 
 start_sync () {
