@@ -24,4 +24,4 @@ start_sync () {
 }
 
 # Start syncing if the drive is connected 
-[ ! -z $backup_path ] && start_sync $backup_path || echo "Drive not connected."
+([ ! -z $backup_path ] && start_sync $backup_path) || echo "Drive not connected."

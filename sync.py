@@ -9,7 +9,7 @@ Description: This backup script creates the root structure in another
              source folder. For files bigger than the specified threshold,
              they are first compressed.
 
-example use: python3 sync.py -target MY_BACKUPFOLDER -source SRC_1 SRC_2
+format: python3 sync.py -target MY_BACKUPFOLDER -source SRC_1 SRC_2
 """
 
 import argparse
@@ -21,10 +21,10 @@ import time
 from threading import Thread
 
 # flag variable shared between threads
-FINISHED = False
+SYNC_THREAD_FINISHED = False
 
 def main():
-    """ Run the backup script.
+    """ Run the backup.
     """
     print('******************Syncing files******************')
     arguments = parse_input()
@@ -49,8 +49,8 @@ def parse_input():
 
         - Text after '-target' specifies the target directory
           (path cannot have spaces)
-        - Text after '-source' specify source(s)
-        - Text after '-compress' specifies zipping with Gzip
+        - Text after '-source' specifies source directory or directories
+        - Text after '-compress' specifies zipping threshold with Gzip
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('-target', nargs=1, required=True,
@@ -86,8 +86,8 @@ def sync_root(root, arguments):
     except PermissionError:
         print('Target directory not found... cannot perform backup.')
     finally:
-        global FINISHED
-        FINISHED = True
+        global SYNC_THREAD_FINISHED
+        SYNC_THREAD_FINISHED = True
 
 
 def sync_file(source, target, compress):
@@ -125,7 +125,7 @@ def size_if_newer(source, target):
 
 
 def transfer_file(source, target, compress):
-    """ Either copy or compress and copy the file.
+    """ Either copy, or compress and copy the file.
 
         - source : source file path (string)
         - target : target file path (string)
@@ -144,7 +144,7 @@ def transfer_file(source, target, compress):
 
 
 def display_waiting_animation():
-    """ Displays an animated progress bar while another thread is running.
+    """ Displays an animated progress bar while the sync thread is running.
 
         Source: https://stackoverflow.com/questions/22029562/
 
@@ -161,7 +161,7 @@ def display_waiting_animation():
     erase_line = '\x1b[2K'
 
     i = 0
-    while not FINISHED:
+    while not SYNC_THREAD_FINISHED:
         time.sleep(0.1)
         # carriage return then write an animation state
         sys.stdout.write('\r' + animation_states[i % len(animation_states)])
