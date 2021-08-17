@@ -23,8 +23,12 @@ from threading import Thread
 # flag variable shared between threads
 SYNC_THREAD_FINISHED = False
 
+
+
+
 def main():
-    """ Run the backup.
+    """ 
+        Run the backup.
     """
     print('******************Syncing files******************')
     arguments = parse_input()
@@ -42,10 +46,12 @@ def main():
     print('Elapsed time: {} second(s)'.format(end - start))
     print('******************Done***************************')
 
-#==========================================================================
+
+
 
 def parse_input():
-    """ Parse the arguments from the command-line.
+    """ 
+        Parse the arguments from the command-line.
 
         - Text after '-target' specifies the target directory
           (path cannot have spaces)
@@ -68,8 +74,11 @@ def parse_input():
     return parser.parse_args()
 
 
+
+
 def sync_root(root, arguments):
-    """ Construct the root file structure (root-to-source)
+    """ 
+        Construct the root file structure (root-to-source)
         in the target directory before copying files.
 
         - root : the root directory (string)
@@ -90,8 +99,11 @@ def sync_root(root, arguments):
         SYNC_THREAD_FINISHED = True
 
 
+
+
 def sync_file(source, target, compress):
-    """ Determines if any changes were made to the source file
+    """ 
+        Determines if any changes were made to the source file
         since the last sync. If so, copy the new file to the target folder.
 
         - source : source file path (string)
@@ -104,8 +116,11 @@ def sync_file(source, target, compress):
         transfer_file(source, target, size > compress)
 
 
+
+
 def size_if_newer(source, target):
-    """ If source is newer return its size, otherwise return False.
+    """ 
+        If source is newer return its size, otherwise return False.
 
         - source : source file path (string)
         - target : target file path (string)
@@ -124,8 +139,11 @@ def size_if_newer(source, target):
     return src_stat.st_size if (src_stat.st_mtime - target_ts > 1) else False
 
 
+
+
 def transfer_file(source, target, compress):
-    """ Either copy, or compress and copy the file.
+    """ 
+        Either copy, or compress and copy the file.
 
         - source : source file path (string)
         - target : target file path (string)
@@ -143,8 +161,11 @@ def transfer_file(source, target, compress):
         transfer_file(source, target, compress)
 
 
+
+
 def display_waiting_animation():
-    """ Displays an animated progress bar while the sync thread is running.
+    """ 
+        Displays an animated progress bar while the sync thread is running.
 
         Source: https://stackoverflow.com/questions/22029562/
 
@@ -171,6 +192,8 @@ def display_waiting_animation():
     # erase the progress bar when it is no longer needed
     sys.stdout.write('\r')
     sys.stdout.write(erase_line)
+
+
 
 
 main()

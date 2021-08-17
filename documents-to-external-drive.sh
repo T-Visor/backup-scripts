@@ -4,8 +4,8 @@ BACKUP_FOLDER='my-files'
 
 # Source and target directories for backup
 # 'TARGET_DIRECTORY' value is dependent on which drive is connected 
-TARGET_DIRECTORY=value
 SOURCE_DIRECTORY="/home/t-visor/Documents"
+TARGET_DIRECTORY=value
 
 # Console text colors
 RED='\033[1;33m'
